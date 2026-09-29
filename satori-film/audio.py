@@ -230,7 +230,7 @@ for b in np.arange(4.0, 11.5, 0.25):
 for b in np.arange(4.0, 11.5, 0.25):
     m = 29 + (1 if int(b * 4) % 8 in (5, 6) else 0)
     put(bassnote(m + 12, 0.22), b, 0.55, bus="duck")
-for i, st in enumerate(cues["slams"][:-1]):
+for i, st in enumerate(cues["slams"]):
     cl = pad([53, 54, 60, 61, 66], 0.2, a=0.003, r=0.18, cutoff=5000, detune=0.3)
     put(cl, st, 0.9, bus="verb")
     put(cl, st, 0.5)
@@ -244,11 +244,17 @@ put(pad([56, 60, 63, 67], 0.5, a=0.01, r=0.6, cutoff=2000), 11.5, 0.25, bus="ver
 put(reverse_swell(0.7), 11.5, 0.4)
 
 # 12-16 satori ---------------------------------------------------------------
+m0, m1 = cues["morph"]
 put(boom(0.6), 12.0, 0.5)
-put(brush(1.05), 12.18, 0.9, -0.3)
-put(brush(1.05), 12.2, 0.6, 0.3)
-put(bowl(56, 6.0), 13.25, 0.55, bus="verb")
-put(bowl(63, 5.0), 13.3, 0.3, 0.3, bus="verb")
+put(sweep_noise(m1 - m0, 600, 6000, "rise"), m0, 0.35)  # the tangle pulls taut
+tc = m0
+while tc < m1:
+    put(tick(0.4, (2500, 7000)), tc, 0.25, rs.uniform(-0.8, 0.8))
+    tc += 0.02 + 0.09 * (1 - (tc - m0) / (m1 - m0))
+put(bowl(56, 6.0), m1, 0.55, bus="verb")  # sunrise
+put(bowl(63, 5.0), m1 + 0.05, 0.3, 0.3, bus="verb")
+for i, m in enumerate([80, 84, 87]):
+    put(pluck(m, 1.2, 1.0), m1 + 0.1 + i * 0.09, 0.1, (-0.4, 0, 0.4)[i], bus="verb")
 put(pad([44, 56, 60, 63], 3.0, a=1.2, r=0.8, cutoff=900), 12.6, 0.28, bus="verb")
 put(riser(1.0, 0.7), 15.0)
 put(reverse_swell(0.6), 15.4, 0.6)
@@ -264,8 +270,13 @@ for i, m in enumerate([72, 75, 79, 80, 84]):
     put(pluck(m, 1.0, 1.2), 18.05 + i * 0.12, 0.1, (-0.4, 0.4)[i % 2], bus="verb")
 for i, m in enumerate([75, 79, 84, 87]):
     put(pluck(m, 1.0, 1.2), 19.0 + i * 0.12, 0.1, (-0.4, 0.4)[i % 2], bus="verb")
-put(riser(0.8, 0.55), 20.2)
-put(whoosh(0.8, 0.5), 20.4)
+for i, tc in enumerate(cues["triple"]):  # Not assembly. Not theatre. Craft.
+    cl = pad([56, 60, 63, 67] if i < 2 else [44, 56, 60, 63, 67, 72], 0.3 if i < 2 else 0.5, a=0.003, r=0.4, cutoff=5000)
+    put(cl, tc, 0.7, bus="verb")
+    put(kick(1.1), tc, 0.8)
+    put(thud(0.8 if i < 2 else 1.1), tc, 0.6)
+put(boom(0.9), cues["triple"][-1], 0.7)
+put(whoosh(0.5, 0.5), 20.75)
 
 # 16-43 groove -------------------------------------------------------------
 for bar_t in np.arange(16.0, 42.5, 2.0):
@@ -388,7 +399,7 @@ for i, tc in enumerate(cues["cities"]):
 put(reverse_swell(0.9), 53.1, 0.6)
 
 # 54-60 end card ------------------------------------------------------------
-put(brush(0.8), 54.0, 0.8, -0.2)
+put(sweep_noise(1.2, 400, 5000, "bell"), 53.95, 0.25)  # the sun rises again
 final = [44, 56, 60, 63, 67, 70, 72]
 put(pad(final, 4.4, a=0.02, r=1.4, cutoff=3000), 54.0, 0.42, bus="verb")
 put(pad(final, 4.4, a=0.02, r=1.4, cutoff=3000), 54.0, 0.16)

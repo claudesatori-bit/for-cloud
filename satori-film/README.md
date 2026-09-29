@@ -1,44 +1,58 @@
-# Satori Craft — 60s motion film
+# Satori Craft — 60s motion film (v2, on brand)
 
-A 1920×1080, 60 fps motion film for **Satori Craft** (satoricraft.com), a practitioner-led Darwinbox
-implementation, application management and governed-AI partner for Southeast Asia, India and the Middle East.
-Every frame is a pure function of time (`render(t)` in `index.html`). Frames are captured headlessly and
-scored with an original synthesized soundtrack synced to the same cues.
+A 1920×1080, 60 fps motion film for **Satori Craft** (satoricraft.com), built to the **Brand Guidelines
+v1.0 (2026)**. Satori Craft is a practitioner-led Darwinbox implementation, application management and governed-AI partner for
+Southeast Asia, India and the Middle East. Every frame is a pure function of time (`render(t)` in `index.html`).
+Frames are captured headlessly and scored with an original synthesized soundtrack synced to the same cues.
 
 **Output:** `satori-craft-film.mp4` (full quality) · `satori-craft-film-preview.mp4` (light)
 
-## Concept
+## Concept, taken from the brand story
 
-An HRMS rollout is noise. *Satori* is the moment it all makes sense. One ensō (a single brush-stroke circle)
-stops the chaos. It then becomes the mark, the ring of 17 module areas, the go-live timeline, and finally the
-end card. A vermilion point runs through the whole film: the countdown light, the centre of the mark, Bengaluru HQ.
+> "Confusing for months, then clear in an instant — once the right partner is in the room."
+
+The film is that sentence. The tangled lines of an HRMS rollout pull taut and land on the strokes of the mark,
+*a lotus opening into a sunrise*. The sunrise comes back at the end. The Bengaluru dot on the map becomes the sun,
+and the lotus opens around it into the approved lockup, with the brand essence
+*Quiet expertise that resolves into clarity.*
 
 ## Storyboard (120 BPM, cuts land on the beat)
 
 | Time | Chapter | What happens |
 |---|---|---|
-| 0–4s | Countdown | A vermilion point. *HRMS rollout · go-live in* **90 → 0 days**, with workstream chips orbiting faster. |
-| 4–11.5s | Noise | Kinetic word slams on every beat (*Payroll. Leave. … UAT, round four. Go-live moved. Again. Who owns this?*), alert cards, a tangled network, and shake and glitch that keep building. |
-| 11.5–12s | Breathe. | Everything drops out. |
-| 12–16s | Satori | Paper. An ensō is brushed bristle by bristle. *Satori · 悟り · the moment everything makes sense.* The camera dives into the ink. |
-| 16–21s | Identity | Shockwave. Mark and wordmark, *Darwinbox Prime Partner*. *Built by HR tech practitioners. Delivered by an enterprise services machine.* |
-| 21–30s | Implement | The mark opens into a 3D ring of 17 module tiles that flip to configured (0/17 → 17/17). The ring tilts edge-on and becomes the timeline: Discover → Go-live. *On time.* Whip-pan. |
-| 30–36s | Run | *Go-live is the start line.* A live service desk resolves tickets while a payroll run completes. Then *Implement. Run. Extend with AI.* |
-| 36–43s | Governed AI | An agent answers an HRBP's attrition question, then refuses a manager's Finance-salary request as Finance rows lock under row-level access. An ISO/IEC 27001:2022 seal stamps down. *AI that knows who is asking.* |
-| 42.6–49s | Proof | Four panes slam in with odometers: **300+** engagements, **100+** implementations led, **56+** combined years, **95%+** on time. *Built by ex-Darwinbox practitioners.* |
-| 49–54s | Reach | Dot-field map. Arcs fly from Bengaluru to the Gulf, India and SEA cities. *One practitioner team. Three regions.* |
-| 54–60s | End card | The ensō is brushed again around the vermilion point. **Satori Craft**, *Clarity, delivered.*, **Talk to a practitioner →**, satoricraft.com. |
+| 0–4s | Countdown | Charcoal. A coral point. *HRMS rollout · go-live in* **90 → 0 days**, with workstream chips orbiting faster. |
+| 4–11.5s | Noise | Word slams on every beat, each ending in a coral full stop (*Payroll. Leave. … UAT, round four. Go-live moved. Again. Who owns this?*). Alert cards, a tangled network, and shake and glitch that keep building. |
+| 11.5–12s | — | *Confusing for months…* |
+| 12–16s | Satori | Off-white. Every tangled line pulls onto a stroke of the mark and the coral sun rises. *…then clear in an instant.* Then *Sa·to·ri (悟り): a sudden moment of clarity.* |
+| 16–21s | Identity | The mark settles into the approved full-colour lockup: *AI-First HR Tech Services · Darwinbox Prime Partner*. *Built by HR tech practitioners. Delivered by an enterprise services machine.* Then *Not assembly. Not theatre. Craft.* |
+| 21–30s | 01 Implement | Navy. A ring of 17 module tiles flips to configured (0/17 → 17/17). The ring tilts edge-on into the Discover → Go-live timeline. *On time.* Whip-pan. |
+| 30–36s | 02 Run | *Go-live is **the start line.*** A live service desk resolves tickets and a payroll run completes. Then *Implement. Run. Extend with AI.* |
+| 36–43s | 03 Governed AI | An agent answers an HRBP's attrition question, then refuses a manager's Finance-salary request as those rows lock under row-level access. An ISO/IEC 27001:2022 seal stamps down. *AI that knows **who is asking.*** |
+| 42.6–49s | 04 By the numbers | Navy / coral / sand / off-white panes with odometers: **300+** enterprise engagements, **100+** HRMS rollouts personally led, **56+** combined years, **95%+** on time. *Built by ex-Darwinbox **practitioners.*** |
+| 49–54s | 05 Reach | Sand dot-field map. Coral arcs fly from Bengaluru to the Gulf, India and SEA. *One practitioner team. **Three regions.*** |
+| 54–60s | End card | The Bengaluru dot becomes the sunrise and the lotus opens into the lockup. *Quiet expertise that **resolves into clarity.***, **Talk to a practitioner →**, satoricraft.com. |
+
+## How the guidelines are applied
+
+- **Colour 60/30/10.** Off-white and sand carry most scenes, navy anchors the hero sections (Implement, AI),
+  and coral is kept for sparks: stat numbers, the second half of headlines, full stops, the sun and the CTA line.
+  Charcoal appears only in the "problem" opening.
+- **Type.** Cambria for headlines and big stats, and Calibri for body, UI and letter-spaced eyebrows, via
+  their metric-compatible open versions Caladea and Carlito (`fonts/`).
+- **Logo.** The approved artwork from the PDF (`assets/logo-full.png`, `logo-white.png`) is used whenever the mark
+  is at rest, with the symbol centred above the wordmark. A vector trace of the same geometry is used only while
+  the mark *builds*. The mark is never recoloured, stretched, rotated in 3D, or given shadows or glows.
+- **Chrome** mirrors the guidelines deck: coral chapter number + letter-spaced label top-left, SATORI CRAFT
+  top-right, footer *Satori Craft · AI-First HR Tech Services* and a page count.
+- **Voice.** Copy comes from the guidelines (brand story, *Not assembly. Not theatre. Craft.*, the brand essence,
+  *100+ HRMS rollouts personally led*) and the site. Nothing on the "don't say" list is used.
 
 ## Assumptions to check
 
-- **Brand look is original.** satoricraft.com was not reachable from the build environment, so the palette
-  (sumi ink / rice paper / hanko vermilion), type (Instrument Serif, Archivo, JetBrains Mono) and ensō mark
-  are proposals, not the official identity. Swap `B`, `F` and `mark()` in `index.html` for the real ones.
-- **Facts** come from satoricraft.com search snippets: Darwinbox Prime Partner, 300+ engagements,
-  100+ implementations, 56+ combined years, 95%+ on-time, 17 module areas, Academy-certified,
-  ISO/IEC 27001:2022, row-level access for AI, GDPR/PDPA/labour law, SEA/India/Middle East.
-- **Written for the film:** *Clarity, delivered.*, *Talk to a practitioner*, *AI that knows who is asking*,
-  *Go-live is the start line*. Ticket names, chat and table rows are illustrative UI, and city arcs show regions, not named clients.
+- The countdown, alert cards, tickets, chat and table rows are illustrative UI. The city arcs show regions, not named clients.
+- *Talk to a practitioner*, *Go-live is the start line* and *AI that knows who is asking* were written for the film.
+- The wordmark is drawn from the PDF's raster logo (480 px wide) at up to 1.3×. A vector or high-res logo file
+  from drive.satoricraft.com/brand would make the lockup sharper.
 
 ## Rebuild
 
