@@ -1,4 +1,4 @@
-"""Original synthesized score for the Streamline film. 120 BPM, F minor -> Ab major.
+"""Original synthesized score for the Streamline Workflows film. 120 BPM, F minor -> Ab major.
 Every hit is placed on the same cue times the visuals use (cues.json)."""
 import json
 import numpy as np
@@ -156,156 +156,170 @@ def reverse_swell(dur):
 
 # ---------------------------------------------------------------- arrangement
 BEAT = 0.5
-CH = {  # voicings (pad) + bass root
+CH = {  # warm voicings (pad) + bass root
+    "Ab": ([56, 60, 63, 67, 70], 44),
     "Fm": ([53, 56, 60, 63, 67], 41),
-    "Db": ([49, 53, 56, 60, 63], 37),
-    "Ab": ([51, 56, 60, 63, 67], 44),
-    "Eb": ([51, 55, 58, 62, 65], 39),
+    "Db": ([53, 56, 60, 61, 65], 37),
+    "Eb": ([55, 58, 62, 63, 67], 39),
 }
-PROG = ["Fm", "Db", "Ab", "Eb"]
-
-
-def chord_at(t):
-    bar = int((t - 16) // 2)
-    return PROG[bar % 4]
-
-
+PROG = ["Ab", "Fm", "Db", "Eb"]
+PENTA = [68, 70, 72, 75, 77, 80, 82, 84]
 kicks = []
 
-# 0-4 prologue ----------------------------------------------------------
-put(pad(CH["Fm"][0], 3.8, a=2.5, r=0.6, cutoff=900), 0.0, 0.35, bus="verb")
-for b in np.arange(0.5, 4.0, 0.5):
-    put(blip(1760, 0.05), b, 0.18, 0.2)
-    put(np.sin(2 * np.pi * 55 * tt(0.4)) * np.exp(-tt(0.4) * 9), b, 0.25)
-s = "every team runs on workflows."
-for i in range(len(s)):
-    tc = 0.6 + (i + 1) / len(s) * 1.25
-    put(filt(rs.standard_normal(int(0.018 * SR)), "bp", (2000, 6000)) * np.exp(-tt(0.018) * 200), tc, 0.25, rs.uniform(-0.4, 0.4))
-put(riser(1.4, 0.45), 2.6)
-for g in np.arange(3.2, 4.0, 0.0625):  # stutter glitch
-    put(blip(rs.uniform(300, 2400), 0.03), g, 0.12, rs.uniform(-0.7, 0.7))
 
-# 4-12 friction ----------------------------------------------------------
-for b in np.arange(4.0, 12.0, BEAT):
+def soft_kick(g=0.7):
+    return kick(1.0) * g
+
+
+def tick(g=1.0, f=(2500, 7000)):
+    n = int(0.015 * SR)
+    return filt(rs.standard_normal(n), "bp", f) * np.exp(-np.arange(n) / SR * 260) * g
+
+
+def woodblock(m):
+    t = tt(0.12)
+    f = mtof(m)
+    return (np.sin(2 * np.pi * f * t) + 0.4 * np.sin(2 * np.pi * f * 2.76 * t)) * np.exp(-t * 45)
+
+
+# 0-12 the problem ------------------------------------------------------
+put(pad([41, 53, 56, 60], 11.8, a=4.0, r=0.4, cutoff=700), 0.0, 0.32, bus="verb")
+for i, nt in enumerate(cues["nodes"]):
+    put(woodblock(PENTA[i % 8] - 12 + (12 if i % 5 == 0 else 0)), nt, 0.10, rs.uniform(-0.7, 0.7), bus="verb")
+tc = 3.0  # unquantised ticking that thickens
+while tc < 11.95:
+    put(tick(rs.uniform(0.2, 0.5)), tc, 0.5, rs.uniform(-0.8, 0.8))
+    tc += max(0.04, 0.45 * np.exp(-(tc - 3) / 3.2)) * rs.uniform(0.5, 1.5)
+for b in np.arange(5.0, 12.0, BEAT):  # heartbeat
     kicks.append(b)
-    put(kick(1.0), b, 0.9)
-for b in np.arange(4.0, 12.0, 0.25):
-    put(hat(), b, 0.45 if (b * 4) % 2 else 0.25, 0.3)
-for b in np.arange(4.0, 12.0, 0.25):  # tense bass: F vs Gb
-    m = 29 + (1 if int(b * 4) % 8 in (5, 6) else 0)
-    put(bassnote(m + 12, 0.22), b, 0.55, bus="duck")
-for st in cues["slams"]:
-    cl = pad([53, 54, 60, 61, 66], 0.2, a=0.003, r=0.18, cutoff=5000, detune=0.3)
-    put(cl, st, 0.9, bus="verb")
-    put(cl, st, 0.5)
-for i, ct in enumerate(cues["cards"]):
-    put(blip([1568, 1760, 2093, 1397, 2349][i % 5], 0.14), ct, 0.22, [-0.6, 0.5, -0.2, 0.7, -0.5][i % 5], bus="verb")
-put(riser(3.0, 0.7), 9.0)
+    put(soft_kick(0.45 if b < 9 else 0.6), b, 0.8)
+for ct in cues["chips"]:
+    put(blip(1318, 0.1), ct, 0.14, 0.3, bus="verb")
+    put(tick(0.6, (1500, 4000)), ct, 0.5)
+put(riser(1.9, 0.5), 10.1)
 
-# 12-16 shift -------------------------------------------------------------
-put(reverse_swell(1.2), 12.0, 0.9)
-put(boom(1.0), 13.2, 0.9)
-put(crash(3.0), 13.2, 0.4, bus="verb")
-put(pad([56, 60, 63, 67, 72], 2.4, a=0.3, r=1.0, cutoff=1800), 13.25, 0.32, bus="verb")
-for i, (tc, m) in enumerate([(13.45, 72), (13.7, 75), (13.95, 79), (14.3, 80), (14.65, 84)]):
-    put(pluck(m, 1.2, 1.5), tc, 0.22, (-0.4, 0.4)[i % 2], bus="verb")
-put(riser(0.85, 0.6), 15.05)
+# 12-17 the fix: everything lands on the grid -----------------------------
+for col in range(9):
+    put(pluck([60, 63, 65, 67, 70, 72, 75, 77, 79][col], 0.5, 1.4), 12.0 + col * 0.05 + 0.5, 0.20, -0.8 + col * 0.2, bus="verb")
+    put(tick(0.7), 12.0 + col * 0.05 + 0.5, 0.5, -0.8 + col * 0.2)
+put(pad(CH["Ab"][0], 2.6, a=0.4, r=0.6, cutoff=1600), 12.6, 0.28, bus="verb")
+for col in range(9):  # ripple arpeggio
+    put(pluck([72, 75, 77, 79, 82, 84, 87, 89, 91][col], 0.6, 1.0), 13.4 + col / 11, 0.12, -0.8 + col * 0.2, bus="verb")
+for b in np.arange(12.5, 16.0, 0.25):
+    put(hat(), b, 0.18 if b % 0.5 else 0.08, 0.3)
+put(riser(1.15, 0.65), 14.85)
+t_ = tt(1.15)
+put(np.sin(2 * np.pi * np.cumsum(220 * 4 ** (t_ / 1.15)) / SR) * (t_ / 1.15) ** 1.5 * 0.25, 14.85, 1.0, bus="verb")
+put(boom(0.9), 16.0, 0.8)
+put(soft_kick(1.0), 16.0, 0.9)
+put(crash(3.0), 16.0, 0.35, bus="verb")
+put(pad([44, 56, 60, 63, 67, 70, 75], 1.2, a=0.005, r=2.2, cutoff=3200), 16.0, 0.45, bus="verb")
+for k in range(12):
+    put(tick(0.5), 16.0 + k * 0.035, 0.35, rs.uniform(-0.8, 0.8))
+for i, m in enumerate([80, 84, 87]):
+    put(pluck(m, 1.6, 0.8), 17.05 + i * 0.12, 0.13, (-0.3, 0, 0.3)[i], bus="verb")
+put(pluck(79, 1.4, 0.8), 18.25, 0.12, bus="verb")
+put(pad(CH["Ab"][0], 3.0, a=0.8, r=0.8, cutoff=1400), 17.2, 0.2, bus="verb")
+put(whoosh(0.7, 0.45), 20.3)
+put(whoosh(0.6, 0.35), 20.85)
+put(boom(0.6), 21.4, 0.6)
 
-# 16 identity impact -----------------------------------------------------
-put(boom(1.2), 16.0, 1.0)
-put(kick(1.2), 16.0, 1.0)
-put(crash(3.0), 16.0, 0.6, bus="verb")
-put(pad(CH["Fm"][0] + [72], 1.6, a=0.005, r=1.6, cutoff=4000), 16.0, 0.5, bus="verb")
-kicks.append(16.0)
-
-# 16-52 groove -----------------------------------------------------------
-for bar_t in np.arange(16.0, 52.0, 2.0):
-    ch = chord_at(bar_t + 0.01)
+# 21.4-41 what we do: the groove ------------------------------------------
+for bar_t in np.arange(22.0, 41.0, 2.0):
+    ch = PROG[int((bar_t - 22) // 2) % 4]
     notes, root = CH[ch]
-    cut = 1500 if bar_t < 22 else 2600
-    put(pad(notes, 1.95, a=0.08, r=0.5, cutoff=cut), bar_t, 0.28, bus="duck")
-    put(pad(notes, 1.95, a=0.08, r=0.5, cutoff=cut), bar_t, 0.12, bus="verb")
-    if bar_t >= 18:
-        for k in range(8):  # bass 8ths, octave jumps
-            m = root - 12 + (12 if k in (3, 7) else 0)
-            put(bassnote(m, 0.22), bar_t + k * 0.25, 0.6, bus="duck")
-    if bar_t >= 18 or bar_t >= 16 and False:
-        arp = sorted(notes) + [notes[1] + 12]
-        pattern = [0, 2, 4, 5, 3, 1, 4, 2, 0, 3, 5, 4, 2, 1, 3, 5]
-        for k in range(16):
-            put(pluck(arp[pattern[k] % len(arp)] + 12, 0.35, 2.2), bar_t + k * 0.125, 0.10, (-0.5, 0.5)[k % 2], bus="verb")
-for b in np.arange(16.5, 52.0, BEAT):
-    if b < 18 and b % 1:
-        continue
-    if 50.5 <= b:
-        continue
+    put(pad(notes, 1.95, a=0.1, r=0.5, cutoff=1900), bar_t, 0.24, bus="duck")
+    put(pad(notes, 1.95, a=0.1, r=0.5, cutoff=1900), bar_t, 0.10, bus="verb")
+    if bar_t >= 24.0:
+        for k in range(8):
+            put(bassnote(root - 12 + (12 if k in (3, 6) else 0), 0.22), bar_t + k * 0.25, 0.5, bus="duck")
+    arp = sorted(notes)
+    pat = [0, 2, 4, 3, 1, 3, 4, 2]
+    for k in range(8):
+        put(pluck(arp[pat[k]] + 12, 0.4, 1.3), bar_t + k * 0.25, 0.08, (-0.5, 0.5)[k % 2], bus="verb")
+for b in np.arange(24.5, 41.0, BEAT):
     kicks.append(b)
-    put(kick(), b, 0.85)
-for b in np.arange(18.0, 51.0, BEAT):
-    if int(round(b / BEAT)) % 2 == 1:
-        put(clap(), b, 0.6, 0.05, bus="verb")
-        put(clap(), b, 0.5)
-for b in np.arange(17.0, 51.5, 0.125):
+    put(soft_kick(0.75), b, 0.8)
+    if int(round(b / BEAT)) % 2 == 0:
+        put(clap(), b + 0.5, 0.28, 0.1, bus="verb")
+for b in np.arange(24.5, 41.0, 0.125):
     k = int(round(b / 0.125)) % 4
-    put(hat(open_=(k == 2)), b, [0.18, 0.1, 0.35, 0.1][k], 0.35 if k % 2 else -0.25)
+    put(hat(open_=(k == 2)), b, [0.12, 0.06, 0.2, 0.06][k], 0.35 if k % 2 else -0.25)
+for p0 in cues["pillars"]:
+    put(whoosh(0.5, 0.25), p0 - 0.25)
+    put(pluck(84, 1.0, 1.0), p0 + 0.08, 0.12, bus="verb")
+# P1: handoffs straighten
+put(riser(0.7, 0.35), 27.1)
+put(pad([75, 79, 82, 87], 0.8, a=0.01, r=1.2, cutoff=5000), 27.8, 0.14, bus="verb")
+# P2: blocks snap in
+for i in range(8):
+    tc = 30.0 + 0.7 + i * 0.09 + 0.4
+    put(woodblock(72 + [0, 3, 5, 7, 10, 12, 15, 17][i]), tc, 0.14, -0.6 + i * 0.17, bus="verb")
+    put(tick(0.5), tc, 0.35)
+put(pad([80, 84, 87], 0.5, a=0.01, r=1.0, cutoff=6000), 33.55, 0.16, bus="verb")
+# P3: three become one
+put(whoosh(0.9, 0.4), 37.7)
+put(pad([68, 72, 75, 79, 84], 0.9, a=0.01, r=1.4, cutoff=5000), 38.6, 0.2, bus="verb")
+put(sweep_noise(1.0, 2000, 9000, "bell"), 38.5, 0.1)
+# iris
+put(whoosh(0.8, 0.45), 40.6)
+put(boom(0.5), 41.4, 0.5)
 
-# 21.55 lime cut -> 22
-put(riser(0.45, 0.6), 21.55)
-put(whoosh(0.5, 0.5), 21.7)
-put(boom(0.6), 22.0, 0.7)
-# build UI foley
-for nt in cues["nodes"]:
-    put(blip(880, 0.12), nt, 0.3, 0.1)
-    put(pluck(84, 0.3, 1), nt, 0.12, bus="verb")
-for tc, f in [(23.65, 2400), (24.4, 1800), (26.47, 2600)]:
-    put(filt(rs.standard_normal(int(0.02 * SR)), "bp", (1500, 5000)) * np.exp(-tt(0.02) * 180), tc, 0.6)
-    put(blip(f, 0.05), tc, 0.25)
-put(pad([72, 75, 79, 84], 0.8, a=0.01, r=0.8, cutoff=6000), 26.5, 0.2, bus="verb")
-for r in cues["runs"]:
-    tc = r["t0"] + 3 * cues["seg"]
-    if tc < 36:
-        put(blip(2093 if r["br"] == "n4" else 1568, 0.08), tc, 0.12, 0.4 if r["br"] == "n4" else -0.4, bus="verb")
-put(whoosh(0.8, 0.9), 35.2)
-put(kick(1.1), 36.0, 0.5)
-
-# stats odometer ticks
-for t0, t1 in [(36.05, 37.6), (38.65, 40.1), (41.35, 42.9)]:
+# 41.4-47.4 impact --------------------------------------------------------
+put(pad([44, 56, 60, 63, 67], 2.9, a=0.2, r=0.4, cutoff=1500), 41.4, 0.3, bus="verb")
+for tc, m in [(41.45, 72), (41.85, 75), (42.6, 79)]:
+    put(pluck(m, 1.2, 1.0), tc, 0.13, bus="verb")
+for bar_t in (44.0, 46.0):
+    notes, root = CH[PROG[int((bar_t - 44) // 2) % 4]]
+    put(pad(notes, 1.95, a=0.05, r=0.5, cutoff=2200), bar_t, 0.24, bus="duck")
+    for k in range(8):
+        put(bassnote(root - 12 + (12 if k in (3, 6) else 0), 0.22), bar_t + k * 0.25, 0.5, bus="duck")
+for b in np.arange(44.0, 47.0, BEAT):
+    kicks.append(b)
+    put(soft_kick(0.8), b, 0.8)
+for b in np.arange(44.0, 47.3, 0.125):
+    put(hat(), b, 0.1, 0.3)
+for t0 in (44.3, 44.55):
     tc = t0
-    while tc < t1:
-        put(blip(3200, 0.012), tc, 0.12, rs.uniform(-0.3, 0.3))
-        tc += 0.025 + 0.12 * ((tc - t0) / (t1 - t0)) ** 2
-for x in (38.6, 41.3):
-    put(whoosh(0.5, 0.35), x - 0.25)
+    while tc < t0 + 1.6:
+        put(tick(0.5, (3000, 8000)), tc, 0.4, rs.uniform(-0.3, 0.3))
+        tc += 0.03 + 0.14 * ((tc - t0) / 1.6) ** 2
+put(whoosh(0.6, 0.35), 47.0)
 
-# 44 connect
-put(whoosh(0.9, 0.4), 43.7)
-put(pad([75, 79, 82, 87], 1.5, a=0.01, r=1.5, cutoff=7000), 44.0, 0.15, bus="verb")
-for i in range(21):
-    put(blip(mtof([72, 75, 79, 80, 84, 87, 91][i % 7]), 0.1), 44.2 + i * 0.05 + 0.15, 0.09, np.sin(i) * 0.8, bus="verb")
-put(riser(1.7, 0.8), 50.3)
-put(whoosh(1.6, 0.4), 50.3)
+# 47.4-54 one line through the noise --------------------------------------
+put(whoosh(0.6, 0.4), 47.35)
+for k in range(40):
+    put(woodblock(rs.choice(PENTA) - 12), 47.75 + rs.random() * 0.8, 0.05, rs.uniform(-0.9, 0.9), bus="verb")
+noise_bed = filt(rs.standard_normal(int(2.4 * SR)), "bp", (800, 5000)) * env_adsr(int(2.4 * SR), 0.6, 0.2, 0.8, 0.7, 1.7)
+put(noise_bed, 47.8, 0.08)
+put(pad([53, 54, 60, 61], 2.0, a=0.5, r=0.4, cutoff=1200, detune=0.35), 47.8, 0.2, bus="verb")
+tc = 47.9
+while tc < 49.6:
+    put(tick(rs.uniform(0.2, 0.5)), tc, 0.45, rs.uniform(-0.9, 0.9))
+    tc += rs.uniform(0.03, 0.1)
+put(pad(CH["Ab"][0], 1.2, a=0.3, r=0.5, cutoff=1400), 49.2, 0.25, bus="verb")
+put(riser(0.9, 0.55), 50.1)
+t_ = tt(0.9)
+put(np.sin(2 * np.pi * np.cumsum(330 * 3 ** (t_ / 0.9)) / SR) * (t_ / 0.9) ** 1.5 * 0.22, 50.1, 1.0, bus="verb")
+put(boom(0.8), 51.0, 0.75)
+put(soft_kick(1.0), 51.0, 0.85)
+put(pad([44, 56, 60, 63, 67, 70, 72], 1.8, a=0.005, r=1.2, cutoff=3200), 51.0, 0.4, bus="verb")
+for tc, m in [(50.85, 79), (51.1, 82), (51.35, 84)]:
+    put(pluck(m, 1.2, 1.0), tc, 0.12, bus="verb")
+put(whoosh(0.8, 0.4), 53.3)
 
-# 52 momentum -----------------------------------------------------------
-put(boom(1.1), 52.0, 1.0)
-put(kick(1.2), 52.0, 1.0)
-put(crash(3.0), 52.0, 0.5, bus="verb")
-put(pad([41, 53, 56, 60, 63, 67], 2.9, a=0.01, r=0.6, cutoff=3000), 52.0, 0.4, bus="verb")
-put(pad([37, 49, 53, 56, 60, 63], 1.0, a=0.01, r=0.6, cutoff=3000), 54.0, 0.3, bus="verb")
-for tc, m in [(52.15, 77), (52.95, 80), (53.2, 84), (53.45, 87)]:
-    put(pluck(m, 1.2, 1.4), tc, 0.18, bus="verb")
-put(riser(0.9, 0.6), 54.1)
-put(boom(1.2), 55.0, 1.0)
-put(kick(1.2), 55.0, 1.0)
-put(crash(4.0), 55.0, 0.55, bus="verb")
-final = [44, 56, 60, 63, 67, 70, 72]  # Ab maj9 — resolve to the major
-put(pad(final, 4.0, a=0.02, r=1.2, cutoff=3500), 55.0, 0.45, bus="verb")
-put(pad(final, 4.0, a=0.02, r=1.2, cutoff=3500), 55.0, 0.2)
-for i, m in enumerate([80, 84, 87, 91, 87, 84, 80, 79]):
-    put(pluck(m, 1.0, 1.2), 56.2 + i * 0.375, 0.09, (-0.6, 0.6)[i % 2], bus="verb")
-put(np.sin(2 * np.pi * 44 * tt(4)) * env_adsr(int(4 * SR), 0.02, 0.5, 0.6, 1.5, 2.5), 55.0, 0.4)
-for st in (57.1, 58.5):
-    put(sweep_noise(0.8, 3000, 12000, "bell"), st, 0.12)
-    put(blip(3136, 0.3), st + 0.4, 0.08, bus="verb")
+# 54-60 end card ----------------------------------------------------------
+for i in range(7):
+    put(woodblock([68, 72, 75, 80, 75, 79, 84][i]), 53.95 + i * 0.05, 0.12, -0.6 + i * 0.2, bus="verb")
+final = [44, 56, 60, 63, 67, 70, 72]
+put(pad(final, 4.4, a=0.02, r=1.4, cutoff=3000), 54.2, 0.42, bus="verb")
+put(pad(final, 4.4, a=0.02, r=1.4, cutoff=3000), 54.2, 0.18)
+put(np.sin(2 * np.pi * 51.9 * tt(5)) * env_adsr(int(5 * SR), 0.02, 0.6, 0.6, 1.8, 3.2), 54.2, 0.35)
+put(soft_kick(0.9), 54.2, 0.8)
+for i, m in enumerate([80, 84, 87, 91, 87, 84]):
+    put(pluck(m, 1.0, 1.0), 55.0 + i * 0.25, 0.08, (-0.5, 0.5)[i % 2], bus="verb")
+put(soft_kick(0.6), 55.7, 0.6)
+put(blip(2093, 0.25), 55.75, 0.08, bus="verb")
 
 # ---------------------------------------------------------------- mix
 t = np.arange(N) / SR
