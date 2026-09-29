@@ -49,7 +49,8 @@ node cues.js            # export cue times for the score
 python3 audio.py        # -> score.wav
 for i in 0 1 2 3; do node render.js $((i*900)) $((i*900+900)) seg/s$i.mp4 & done; wait
 printf "file 's0.mp4'\nfile 's1.mp4'\nfile 's2.mp4'\nfile 's3.mp4'\n" > seg/list.txt
-$FFMPEG -f concat -i seg/list.txt -i score.wav -c:v copy -c:a aac -b:a 256k -shortest satori-craft-film.mp4
+$FFMPEG -f concat -i seg/list.txt -i score.wav -c:v copy -c:a aac -b:a 256k -shortest seg/master.mp4
+$FFMPEG -i seg/master.mp4 -c:v libx264 -preset slow -b:v 11M -maxrate 14M -bufsize 20M -movflags +faststart -c:a copy satori-craft-film.mp4
 ```
 
 Open `index.html` in a browser for a real-time preview (`?t=23.5` freezes a frame).
