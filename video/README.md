@@ -7,19 +7,21 @@ and the "fused row" graphic device. Every frame is a pure function of time (`ren
 
 **Output:** `streamline-film.mp4` (full quality) · `streamline-film-preview.mp4` (light)
 
-## The idea
-
-The film *is* the mark: scattered nodes → one row resolved. Before and after, inside a single shape.
+## Storyboard (120 BPM — cuts land on the beat)
 
 | Time | Chapter | What happens |
 |---|---|---|
-| 0–12s | 01 The problem | Nodes scatter into a tangled network on cream. *"Your business already works. It just works too hard."* Audit findings pin to nodes; *"Nine hours a week, lost to re-entry."* Unquantised ticking thickens. |
-| 12–17s | 02 The fix | Every node snaps onto a 3×9 grid on the beat; the middle row fuses into the ember bar. *"We find the hours and give them back."* |
-| 17–21s | Identity | The grid condenses into the mark; wordmark + *"Fewer moving parts."* The bar stretches edge to edge and slits open to forest. |
-| 21–41s | 03 What we do | Positioning line, then the three pillars, each told with nodes: handoffs straightening into one flow, nodes opening into a working ops board, three rings merging into one 360° system. |
-| 41–47s | 04 Impact | *"Your team spends nine hours a week retyping the same order."* → **9 hrs** returned / **6 wks** to first shipped tool. |
-| 47–54s | 05 One line | A noisy field of nodes settles; one row fuses. *"One line through the noise."* |
-| 54–60s | End card | The fused row becomes the mark: lockup, *"Fewer moving parts."*, **Book a 30-min audit**, URL. |
+| 0–4s | Prologue | A pulse on forest; a terminal types *"every business runs on workflows."*; the line ripples, then tangles. |
+| 4–13s | Friction | Kinetic word slams (*Tabs. Pings. Handoffs. Spreadsheets. … Repeat.*), audit-style cards, tangled network, shake and glitch; "hours lost" counter climbs to 09h. Everything implodes. |
+| 13–16s | The truth | Cream: *"Your business already works. It just works too hard."* |
+| 16–21s | Identity | Shockwave; eight nodes fly in, the middle row fuses ember; wordmark. Dive into a node. |
+| 21–29s | Automation | 3D product: drag a step in, wire *New order → Check stock → In stock? → Send invoice / Reorder*, hit Run, orders flow. Whip-pan out. |
+| 29–34s | Product | Nodes open into a working job-status board; a sign-off clears live. |
+| 34–38s | Marketing | *Demand. Brand. Measurement.* slam in, collapse into one 360° ring: *One system.* |
+| 38–43s | Impact | Split screen: **9 hrs** returned / **6 wks** to first shipped tool. |
+| 43–47s | Voice | *"We leverage cutting-edge synergies."* gets struck out → *"Here's the plan to get your hours back."* |
+| 47–54s | One line | A noisy field settles; one row fuses: *"One line through the noise."* |
+| 54–60s | End card | The row becomes the mark; *"Fewer moving parts."*, **Book a 30-min audit**, URL. |
 
 Brand rules respected: ember only on the bar and as punctuation; sage only on forest; one fused row per
 composition; serif set regular, never all-caps; the mark is never rotated, skewed or recoloured.
